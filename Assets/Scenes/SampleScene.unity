@@ -1856,7 +1856,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.94716984, g: 0.79409534, b: 0.12688503, a: 1}
+  m_Color: {r: 0.2, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2742,6 +2742,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff4fe9150da50f458345ef481fb4296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _originalCarTint:
+    serializedVersion: 2
+    rgba: 4294967295
+  _hasPackageCarTint:
+    serializedVersion: 2
+    rgba: 4281597747
 --- !u!1 &980891745
 GameObject:
   m_ObjectHideFlags: 0
