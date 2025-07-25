@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
 
 public class PackageDelivery : MonoBehaviour
 {
+    public static event Action OnPackagePickedUp;
+    public static event Action OnPackageDelivered;
+    
     [SerializeField] private Color32 _originalCarTint = new Color32(255, 255, 255, 255);
     [SerializeField] private Color32 _hasPackageCarTint = new Color32(51, 255, 51, 255);
 
@@ -20,6 +24,7 @@ public class PackageDelivery : MonoBehaviour
         {
             Debug.Log("Package picked up!");
             _hasPackage = true;
+            OnPackagePickedUp?.Invoke();
             _spriteRenderer.color = _hasPackageCarTint;
             Destroy(collision.gameObject, _destroyDelay);
         }
@@ -28,6 +33,7 @@ public class PackageDelivery : MonoBehaviour
         {
             Debug.Log("Package delivered!");
             _hasPackage = false;
+            OnPackageDelivered?.Invoke();
             _spriteRenderer.color = _originalCarTint;
             Destroy(collision.gameObject, _destroyDelay);
         }
