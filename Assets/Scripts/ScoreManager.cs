@@ -4,8 +4,8 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     public static event Action<int> OnScoreIncreased;
-
-    private int _score;
+    public static int Score;
+    public static int BestScore;
 
     private void OnEnable()
     {
@@ -17,10 +17,15 @@ public class ScoreManager : MonoBehaviour
         PackageDelivery.OnPackageDelivered -= IncreaseScore;
     }
 
+    private void Start()
+    {
+        Score = 0; // Reset score at the start of the game
+    }
+
     private void IncreaseScore()
     {
-        _score++;
-        OnScoreIncreased?.Invoke(_score);
-        Debug.Log($"Score: {_score}.");
+        Score++;
+        OnScoreIncreased?.Invoke(Score);
+        Debug.Log($"Score: {Score}.");
     }
 }
