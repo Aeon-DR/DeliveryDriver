@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    [SerializeField] private float _moveForce = 150f;
-    [SerializeField] private float _turnTorque = 45f;
+    [SerializeField] private float _moveForce = 200f;
+    [SerializeField] private float _turnTorque = 35f;
     [SerializeField] private float _boostMultiplier = 1.5f;
 
     private Rigidbody2D _rigidbody;
