@@ -1,10 +1,14 @@
+using System.Collections;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    [SerializeField] private float _turnSpeed = 250f;
-    [SerializeField] private float _moveSpeed = 18f;
-    [SerializeField] private float _boostSpeed = 1f;
+    [SerializeField] private float _moveForce = 150f;
+    [SerializeField] private float _turnTorque = 45f;
+    [SerializeField] private float _boostMultiplier = 1.5f;
+
+    private Rigidbody2D _rigidbody;
+    private float _penaltyDuration = 1.5f;
 
     private void OnEnable()
     {
@@ -16,28 +20,50 @@ public class CarController : MonoBehaviour
         GameManager.OnGameOver -= FreezeMovement;
     }
 
-    private void Update()
+    private void Start()
     {
-        float steerAmount = Input.GetAxis("Horizontal");
-        float moveAmount = Input.GetAxis("Vertical");
+        _rigidbody = GetComponent<Rigidbody2D>();
+    }
 
-        transform.Translate(Vector3.up * Time.deltaTime * _moveSpeed * moveAmount);
-        transform.Rotate(Vector3.back, Time.deltaTime * _turnSpeed * steerAmount * moveAmount);
+    private void FixedUpdate()
+    {
+        float moveInput = Input.GetAxis("Vertical");
+        float steerInput = Input.GetAxis("Horizontal");
 
+        float force = _moveForce;
         if (Input.GetKey(KeyCode.LeftShift))
+            force *= _boostMultiplier;
+
+        _rigidbody.AddForce(transform.up * moveInput * force);
+
+        // Apply torque only when moving
+        if (moveInput != 0)
         {
-            transform.Translate(Vector3.up * Time.deltaTime * (_moveSpeed + _boostSpeed) * moveAmount);
+            _rigidbody.AddTorque(-steerInput * _turnTorque * moveInput);
         }
+    }
+
+    private void OnCollisionEnter2D()
+    {
+        StartCoroutine(CollisionPenaltyRoutine(_penaltyDuration));
     }
 
     private void FreezeMovement()
     {
-        _turnSpeed = 0;
-        _moveSpeed = 0;
-        _boostSpeed = 0;
+        _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
 
-        // Freeze the car's movement by adjusting its rb constraints instead once proper car physics are implemented
-        // var rb = GetComponent<Rigidbody2D>();
-        // rb.constraints = RigidbodyConstraints2D.FreezeAll;
+    private void UnfreezeMovement()
+    {
+        _rigidbody.constraints = RigidbodyConstraints2D.None;
+    }
+
+    private IEnumerator CollisionPenaltyRoutine(float penaltyDuration)
+    {
+        FreezeMovement();
+        Debug.Log($"Collision detected! Freezing movement for {penaltyDuration} seconds.");
+        yield return new WaitForSeconds(penaltyDuration);
+        UnfreezeMovement();
+        Debug.Log("Drive!");
     }
 }
