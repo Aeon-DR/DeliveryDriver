@@ -5,17 +5,18 @@ public class PackageDelivery : MonoBehaviour
 {
     public static event Action OnPackagePickedUp;
     public static event Action OnPackageDelivered;
-    
-    [SerializeField] private Color32 _originalCarTint = new Color32(255, 255, 255, 255);
-    [SerializeField] private Color32 _hasPackageCarTint = new Color32(51, 255, 51, 255);
 
-    private SpriteRenderer _spriteRenderer;
+    private GameObject _package;
     private bool _hasPackage;
     private float _destroyDelay = 0.5f;
 
-    private void Start()
+    private void Update()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        // Keep the package on top of the player's car once picked up
+        if (_package != null)
+        {   
+            _package.transform.SetPositionAndRotation(transform.position, transform.rotation);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -24,9 +25,8 @@ public class PackageDelivery : MonoBehaviour
         {
             Debug.Log("Package picked up!");
             _hasPackage = true;
+            _package = collision.gameObject;
             OnPackagePickedUp?.Invoke();
-            _spriteRenderer.color = _hasPackageCarTint;
-            Destroy(collision.gameObject, _destroyDelay);
         }
 
         if (collision.CompareTag("Customer") && _hasPackage)
@@ -34,8 +34,8 @@ public class PackageDelivery : MonoBehaviour
             Debug.Log("Package delivered!");
             _hasPackage = false;
             OnPackageDelivered?.Invoke();
-            _spriteRenderer.color = _originalCarTint;
             Destroy(collision.gameObject, _destroyDelay);
+            Destroy(_package, _destroyDelay);
         }
     }
 }
