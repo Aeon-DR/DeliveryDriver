@@ -5,7 +5,7 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _spawnLocations;
     [SerializeField] private GameObject _packagePrefab;
-    [SerializeField] private GameObject _customerPrefab;
+    [SerializeField] private List<GameObject> _customerPrefabs;
     private int _lastIndex;
 
     private void OnEnable()
@@ -41,7 +41,8 @@ public class SpawnManager : MonoBehaviour
 
     private void HandlePackagedPickedUp()
     {
-        SpawnRandomly(_customerPrefab);
+        int randomIndex = Random.Range(0, _customerPrefabs.Count);
+        SpawnRandomly(_customerPrefabs[randomIndex]);
     }
 
     private void HandlePackageDelivered()
