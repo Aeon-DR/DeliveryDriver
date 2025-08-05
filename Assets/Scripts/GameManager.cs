@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,5 +35,11 @@ public class GameManager : MonoBehaviour
         }
 
         GamerOver();
+    }
+
+    public void RestartScene()
+    {
+        Timer = 60;
+        SceneManager.LoadScene(0);
     }
 }

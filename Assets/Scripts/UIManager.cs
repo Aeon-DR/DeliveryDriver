@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
     {
         _scoreText.text = $"Score: {ScoreManager.Score}";
         _timerText.text = $"Time Left: {GameManager.Timer}";
+        _gameOverContainer.SetActive(false);
     }
 
     private void UpdateScoreUI(int score)
