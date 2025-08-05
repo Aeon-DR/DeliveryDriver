@@ -27,6 +27,7 @@ public class CarController : MonoBehaviour
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        UnfreezeMovement();
     }
 
     private void FixedUpdate()
@@ -67,7 +68,11 @@ public class CarController : MonoBehaviour
         FreezeMovement();
         OnMovementFreeze?.Invoke();
         yield return new WaitForSeconds(penaltyDuration);
-        UnfreezeMovement();
-        OnMovementUnfreeze?.Invoke();
+
+        if (!GameManager.IsGameOver)
+        {
+            UnfreezeMovement();
+            OnMovementUnfreeze?.Invoke();
+        }
     }
 }

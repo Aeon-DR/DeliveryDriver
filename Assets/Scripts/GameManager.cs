@@ -8,9 +8,11 @@ public class GameManager : MonoBehaviour
     public static event Action OnGameOver;
     public static event Action<int> OnTimerChanged;
     public static int Timer = 60;
+    public static bool IsGameOver;
 
     private void Start()
     {
+        IsGameOver = false;
         StartCoroutine(CountdownTimerRoutine());
     }
 
@@ -21,6 +23,7 @@ public class GameManager : MonoBehaviour
             ScoreManager.BestScore = ScoreManager.Score;
         }
 
+        IsGameOver = true;
         OnGameOver?.Invoke();
         StopAllCoroutines();
     }

@@ -50,6 +50,7 @@ public class UIManager : MonoBehaviour
         _gameOverContainer.SetActive(true);
         _finalScoreText.text = $"Final Score: {ScoreManager.Score}";
         _bestScoreText.text = $"Best Score: {ScoreManager.BestScore}";
+        HidePenaltyMessage(); // Ensure penalty message is hidden on game over
     }
 
     private void ShowPenaltyMessage()
