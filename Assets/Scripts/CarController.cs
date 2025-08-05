@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
+    public static event Action OnMovementFreeze;
+    public static event Action OnMovementUnfreeze;
+
     [SerializeField] private float _moveForce = 200f;
     [SerializeField] private float _turnTorque = 35f;
     [SerializeField] private float _boostMultiplier = 1.5f;
@@ -61,9 +65,9 @@ public class CarController : MonoBehaviour
     private IEnumerator CollisionPenaltyRoutine(float penaltyDuration)
     {
         FreezeMovement();
-        Debug.Log($"Collision detected! Freezing movement for {penaltyDuration} seconds.");
+        OnMovementFreeze?.Invoke();
         yield return new WaitForSeconds(penaltyDuration);
         UnfreezeMovement();
-        Debug.Log("Drive!");
+        OnMovementUnfreeze?.Invoke();
     }
 }

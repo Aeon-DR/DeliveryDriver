@@ -23,7 +23,6 @@ public class PackageDelivery : MonoBehaviour
     {
         if (collision.CompareTag("Package") && !_hasPackage)
         {
-            Debug.Log("Package picked up!");
             _hasPackage = true;
             _package = collision.gameObject;
             OnPackagePickedUp?.Invoke();
@@ -31,7 +30,6 @@ public class PackageDelivery : MonoBehaviour
 
         if (collision.CompareTag("Customer") && _hasPackage)
         {
-            Debug.Log("Package delivered!");
             _hasPackage = false;
             OnPackageDelivered?.Invoke();
             Destroy(collision.gameObject, _destroyDelay);

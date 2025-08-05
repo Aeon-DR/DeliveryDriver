@@ -26,6 +26,5 @@ public class ScoreManager : MonoBehaviour
     {
         Score++;
         OnScoreIncreased?.Invoke(Score);
-        Debug.Log($"Score: {Score}.");
     }
 }
