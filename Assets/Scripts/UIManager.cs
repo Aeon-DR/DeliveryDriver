@@ -4,7 +4,7 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject _gameOverContainer;
-    [SerializeField] private GameObject _penaltyMessage;
+    [SerializeField] private GameObject _penaltyMessageContainer;
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private TextMeshProUGUI _finalScoreText;
@@ -55,11 +55,11 @@ public class UIManager : MonoBehaviour
 
     private void ShowPenaltyMessage()
     {
-        _penaltyMessage.SetActive(true);
+        _penaltyMessageContainer.SetActive(true);
     }
 
     private void HidePenaltyMessage()
     {
-        _penaltyMessage.SetActive(false);
+        _penaltyMessageContainer.SetActive(false);
     }
 }
