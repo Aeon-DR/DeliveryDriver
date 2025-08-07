@@ -6,6 +6,9 @@ public class CarController : MonoBehaviour
 {
     public static event Action OnMovementFreeze;
     public static event Action OnMovementUnfreeze;
+    public static event Action OnCarAcceleration;
+
+    public static bool IsInPenalty;
 
     [SerializeField] private float _moveForce = 200f;
     [SerializeField] private float _turnTorque = 35f;
@@ -30,15 +33,27 @@ public class CarController : MonoBehaviour
         UnfreezeMovement();
     }
 
+    private void Update()
+    {
+        // Play engine sound only once when Left Shift is pressed
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            OnCarAcceleration?.Invoke();
+        }
+    }
+
+
     private void FixedUpdate()
     {
         float moveInput = Input.GetAxis("Vertical");
         float steerInput = Input.GetAxis("Horizontal");
-
         float force = _moveForce;
-        if (Input.GetKey(KeyCode.LeftShift))
-            force *= _boostMultiplier;
 
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            force *= _boostMultiplier;
+        }
+            
         _rigidbody.AddForce(transform.up * moveInput * force);
 
         // Apply torque only when moving
@@ -56,11 +71,13 @@ public class CarController : MonoBehaviour
     private void FreezeMovement()
     {
         _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        IsInPenalty = true;
     }
 
     private void UnfreezeMovement()
     {
         _rigidbody.constraints = RigidbodyConstraints2D.None;
+        IsInPenalty = false;
     }
 
     private IEnumerator CollisionPenaltyRoutine(float penaltyDuration)
