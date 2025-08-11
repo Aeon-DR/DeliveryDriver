@@ -45,4 +45,9 @@ public class GameManager : MonoBehaviour
         Timer = 60;
         SceneManager.LoadScene(0);
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
