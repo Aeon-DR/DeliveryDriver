@@ -17,7 +17,7 @@ public class AudioManager : MonoBehaviour
        PackageDelivery.OnPackagePickedUp += PlayPackagePickedSound;
        PackageDelivery.OnPackageDelivered += PlayPackageDeliveredSound;
        CarController.OnMovementFreeze += PlayCarCrashSound;
-       CarController.OnCarAcceleration += PlayCarEngineSound;
+       CarController.OnCarAccelerationStart += PlayCarEngineSound;
        GameManager.OnGameOver += PlayFanfareSound;
     }
 
@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour
         PackageDelivery.OnPackagePickedUp -= PlayPackagePickedSound;
         PackageDelivery.OnPackageDelivered -= PlayPackageDeliveredSound;
         CarController.OnMovementFreeze -= PlayCarCrashSound;
-        CarController.OnCarAcceleration -= PlayCarEngineSound;
+        CarController.OnCarAccelerationStart -= PlayCarEngineSound;
         GameManager.OnGameOver -= PlayFanfareSound;
     }
 
@@ -64,14 +64,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        // Stop the engine sound if it's already playing to have only one instance playing at a time
-        if (_sfxSource.isPlaying && _sfxSource.clip == _carEngine)
-        {
-            _sfxSource.Stop();
-        }
-
-        _sfxSource.clip = _carEngine;
-        _sfxSource.Play();
+        _sfxSource.PlayOneShot(_carEngine, 0.4f);
     }
 
     private void PlayFanfareSound()

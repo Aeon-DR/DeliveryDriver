@@ -6,7 +6,8 @@ public class CarController : MonoBehaviour
 {
     public static event Action OnMovementFreeze;
     public static event Action OnMovementUnfreeze;
-    public static event Action OnCarAcceleration;
+    public static event Action OnCarAccelerationStart;
+    public static event Action OnCarAccelerationEnd;
 
     public static bool IsInPenalty;
 
@@ -16,6 +17,8 @@ public class CarController : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
     private float _penaltyDuration = 1.5f;
+
+    private bool _isBoosting = false;
 
     private void OnEnable()
     {
@@ -35,10 +38,16 @@ public class CarController : MonoBehaviour
 
     private void Update()
     {
-        // Play engine sound only once when Left Shift is pressed
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            OnCarAcceleration?.Invoke();
+            _isBoosting = true;
+            OnCarAccelerationStart?.Invoke();
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _isBoosting = false;
+            OnCarAccelerationEnd?.Invoke();
         }
     }
 
@@ -49,7 +58,7 @@ public class CarController : MonoBehaviour
         float steerInput = Input.GetAxis("Horizontal");
         float force = _moveForce;
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (_isBoosting)
         {
             force *= _boostMultiplier;
         }
